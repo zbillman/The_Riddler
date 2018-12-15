@@ -6,7 +6,7 @@ December 15, 2018
 The Riddle
 ==========
 
-Louie walks to and from work every day. In his city, there is a 50 percent chance of rain each morning and an independent 40 percent chance each evening. His habit is to bring (and use) an umbrella if itâs raining when he leaves the house or office, but to leave them all behind if not. Louie owns three umbrellas.
+Louie walks to and from work every day. In his city, there is a 50 percent chance of rain each morning and an independent 40 percent chance each evening. His habit is to bring (and use) an umbrella if it's raining when he leaves the house or office, but to leave them all behind if not. Louie owns three umbrellas.
 
 On Sunday night, two are with him at home and one is at his office. Assuming it never starts raining during his walk to his home or office, what is the probability that he makes it through the work week without getting wet?
 
