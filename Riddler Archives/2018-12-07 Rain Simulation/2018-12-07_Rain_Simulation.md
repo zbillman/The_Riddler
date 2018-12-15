@@ -6,7 +6,7 @@ December 15, 2018
 The Riddle
 ==========
 
-Louie walks to and from work every day. In his city, there is a 50 percent chance of rain each morning and an independent 40 percent chance each evening. His habit is to bring (and use) an umbrella if it’s raining when he leaves the house or office, but to leave them all behind if not. Louie owns three umbrellas.
+Louie walks to and from work every day. In his city, there is a 50 percent chance of rain each morning and an independent 40 percent chance each evening. His habit is to bring (and use) an umbrella if itâs raining when he leaves the house or office, but to leave them all behind if not. Louie owns three umbrellas.
 
 On Sunday night, two are with him at home and one is at his office. Assuming it never starts raining during his walk to his home or office, what is the probability that he makes it through the work week without getting wet?
 
@@ -52,7 +52,9 @@ theme_set(theme_light())
 First try
 =========
 
-crossing() is similar to expand.grid() in that it makes all combinations of what you ask don't know how to make it call on the previous umb\_\*\_start to start the later columns
+crossing() is similar to expand.grid() in that it makes all combinations of what you ask
+
+don't know how to make it call on the previous umb\_\*\_start to start the later columns
 
 ``` r
 crossing(trial = 1:3,
@@ -98,7 +100,9 @@ I realized that I ran into an issue where I couldn't break down the umbrella cha
 Building table with commutes
 ============================
 
-Arrage is used to make sure it goes in order of each trial, dotw, then Morning and Evening rain = chance of rain for a given morning or evening. 50% morning, 40% evening
+Arrage is used to make sure it goes in order of each trial, dotw, then Morning and Evening
+
+rain = chance of rain for a given morning or evening. 50% morning, 40% evening
 
 ``` r
 crossing(trial = 1:5,
@@ -127,7 +131,11 @@ crossing(trial = 1:5,
 Calculating change in umbrellas by commute
 ==========================================
 
-home\_delta calculates the change in umbrellas at home for each combination of commute and rain office\_delta calculates the change in umbrellas at the office for each combination of commute and rain I really wanted to make office\_delta = -home\_delta but for some reason that wouldn't work!
+home\_delta calculates the change in umbrellas at home for each combination of commute and rain
+
+office\_delta calculates the change in umbrellas at the office for each combination of commute and rain
+
+I really wanted to make office\_delta = -home\_delta but for some reason that wouldn't work!
 
 ``` r
 crossing(trial = 1:5,
@@ -275,10 +283,33 @@ simulations %>%
     ##           <dbl>
     ## 1         0.693
 
+Answer
+======
+
+Louie's got ~69.3% chance of making it through the week this way!
+
 The day Louie first gets wet
 ============================
 
-Filters all lines of data for where umb\_home or umb\_office is less than 0 Finds only the first one for each trial using distinct() counts how many times Louie first gets wet by the day of the week and the commute Changes the day of the week into a readable format using days &lt;- c("Mon", "Tue", "Wed", "Thu", "Fri") mutate(dotw = factor(days\[dotw\], levels = days)) turns dotw from a number to an ordered factor of dotw dotw needs to be ordered 1,2,3,4,5 to match with Mon,Tue,Wed,Thu,Fri to make this work Changes the order of morning and evening in the plot using fct\_relevel complete() adds each dotw & commute combination to the count() Graphs out all of the days he first gets wet!
+Filters all lines of data for where umb\_home or umb\_office is less than 0
+
+Finds only the first one for each trial using distinct()
+
+counts how many times Louie first gets wet by the day of the week and the commute
+
+Changes the day of the week into a readable format using
+
+days &lt;- c("Mon", "Tue", "Wed", "Thu", "Fri")
+
+mutate(dotw = factor(days\[dotw\], levels = days)) turns dotw from a number to an ordered factor of dotw
+
+dotw needs to be ordered 1,2,3,4,5 to match with Mon,Tue,Wed,Thu,Fri to make this work
+
+Changes the order of morning and evening in the plot using fct\_relevel
+
+complete() adds each dotw & commute combination to the count()
+
+Graphs out all of the days he first gets wet!
 
 ``` r
 days <- c("Mon", "Tue", "Wed", "Thu", "Fri")
@@ -337,7 +368,13 @@ crossing(trial = 1:3,
 Using case\_when to determine umbrella change
 =============================================
 
-case\_when() requires a sequence of 2 sided formulas where the left is the input and the right is the output You separate the input and output with a tilde (~) Put the most general case at the end. Here, TRUE ~ 0 indicates that all other cases result in a 0. For some reason I can set office\_delta = -home\_delta here. Talk about a cleaner way to do it!
+case\_when() requires a sequence of 2 sided formulas where the left is the input and the right is the output
+
+You separate the input and output with a tilde (~)
+
+Put the most general case at the end. Here, TRUE ~ 0 indicates that all other cases result in a 0.
+
+For some reason I can set office\_delta = -home\_delta here. Talk about a cleaner way to do it!
 
 ``` r
 crossing(trial = 1:1e6,

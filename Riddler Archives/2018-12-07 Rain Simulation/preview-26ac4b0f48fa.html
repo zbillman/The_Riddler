@@ -29,7 +29,7 @@ body {
 <p>zpb<br />
 December 15, 2018</p>
 <h1 id="the-riddle">The Riddle</h1>
-<p>Louie walks to and from work every day. In his city, there is a 50 percent chance of rain each morning and an independent 40 percent chance each evening. His habit is to bring (and use) an umbrella if it’s raining when he leaves the house or office, but to leave them all behind if not. Louie owns three umbrellas.</p>
+<p>Louie walks to and from work every day. In his city, there is a 50 percent chance of rain each morning and an independent 40 percent chance each evening. His habit is to bring (and use) an umbrella if itâs raining when he leaves the house or office, but to leave them all behind if not. Louie owns three umbrellas.</p>
 <p>On Sunday night, two are with him at home and one is at his office. Assuming it never starts raining during his walk to his home or office, what is the probability that he makes it through the work week without getting wet?</p>
 <p><a href="https://53eig.ht/2UoA8iS" class="uri">https://53eig.ht/2UoA8iS</a></p>
 <p><a href="https://youtu.be/TDzd73z8thU" class="uri">https://youtu.be/TDzd73z8thU</a></p>
@@ -58,7 +58,8 @@ December 15, 2018</p>
 ##     col_factor</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">theme_set</span>(<span class="kw">theme_light</span>())</code></pre></div>
 <h1 id="first-try">First try</h1>
-<p>crossing() is similar to expand.grid() in that it makes all combinations of what you ask don't know how to make it call on the previous umb_*_start to start the later columns</p>
+<p>crossing() is similar to expand.grid() in that it makes all combinations of what you ask</p>
+<p>don't know how to make it call on the previous umb_*_start to start the later columns</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossing</span>(<span class="dt">trial =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,
          <span class="dt">dotw =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rain_morn =</span> <span class="kw">sample</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">size =</span> <span class="kw">n</span>(), <span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">prob =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>)),
@@ -96,7 +97,8 @@ December 15, 2018</p>
 ## # ... with 2 more variables: umb_work_end &lt;dbl&gt;, umb_home_end &lt;dbl&gt;</code></pre>
 <p>I realized that I ran into an issue where I couldn't break down the umbrella change by each commute this way. I need to add a column that is the commute so I can cumsum() to add changes.</p>
 <h1 id="building-table-with-commutes">Building table with commutes</h1>
-<p>Arrage is used to make sure it goes in order of each trial, dotw, then Morning and Evening rain = chance of rain for a given morning or evening. 50% morning, 40% evening</p>
+<p>Arrage is used to make sure it goes in order of each trial, dotw, then Morning and Evening</p>
+<p>rain = chance of rain for a given morning or evening. 50% morning, 40% evening</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossing</span>(<span class="dt">trial =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
          <span class="dt">dotw =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
          <span class="dt">commute =</span> <span class="kw">c</span>(<span class="st">&quot;Morning&quot;</span>, <span class="st">&quot;Evening&quot;</span>)) <span class="op">%&gt;%</span>
@@ -118,7 +120,9 @@ December 15, 2018</p>
 ## 10     1     5 Evening     1
 ## # ... with 40 more rows</code></pre>
 <h1 id="calculating-change-in-umbrellas-by-commute">Calculating change in umbrellas by commute</h1>
-<p>home_delta calculates the change in umbrellas at home for each combination of commute and rain office_delta calculates the change in umbrellas at the office for each combination of commute and rain I really wanted to make office_delta = -home_delta but for some reason that wouldn't work!</p>
+<p>home_delta calculates the change in umbrellas at home for each combination of commute and rain</p>
+<p>office_delta calculates the change in umbrellas at the office for each combination of commute and rain</p>
+<p>I really wanted to make office_delta = -home_delta but for some reason that wouldn't work!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossing</span>(<span class="dt">trial =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
          <span class="dt">dotw =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
          <span class="dt">commute =</span> <span class="kw">c</span>(<span class="st">&quot;Morning&quot;</span>, <span class="st">&quot;Evening&quot;</span>)) <span class="op">%&gt;%</span>
@@ -240,8 +244,19 @@ simulations <span class="op">%&gt;%</span>
 ##   pct_successes
 ##           &lt;dbl&gt;
 ## 1         0.693</code></pre>
+<h1 id="answer">Answer</h1>
+<p>Louie's got ~69.3% chance of making it through the week this way!</p>
 <h1 id="the-day-louie-first-gets-wet">The day Louie first gets wet</h1>
-<p>Filters all lines of data for where umb_home or umb_office is less than 0 Finds only the first one for each trial using distinct() counts how many times Louie first gets wet by the day of the week and the commute Changes the day of the week into a readable format using days &lt;- c(&quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;) mutate(dotw = factor(days[dotw], levels = days)) turns dotw from a number to an ordered factor of dotw dotw needs to be ordered 1,2,3,4,5 to match with Mon,Tue,Wed,Thu,Fri to make this work Changes the order of morning and evening in the plot using fct_relevel complete() adds each dotw &amp; commute combination to the count() Graphs out all of the days he first gets wet!</p>
+<p>Filters all lines of data for where umb_home or umb_office is less than 0</p>
+<p>Finds only the first one for each trial using distinct()</p>
+<p>counts how many times Louie first gets wet by the day of the week and the commute</p>
+<p>Changes the day of the week into a readable format using</p>
+<p>days &lt;- c(&quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;)</p>
+<p>mutate(dotw = factor(days[dotw], levels = days)) turns dotw from a number to an ordered factor of dotw</p>
+<p>dotw needs to be ordered 1,2,3,4,5 to match with Mon,Tue,Wed,Thu,Fri to make this work</p>
+<p>Changes the order of morning and evening in the plot using fct_relevel</p>
+<p>complete() adds each dotw &amp; commute combination to the count()</p>
+<p>Graphs out all of the days he first gets wet!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">days &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Mon&quot;</span>, <span class="st">&quot;Tue&quot;</span>, <span class="st">&quot;Wed&quot;</span>, <span class="st">&quot;Thu&quot;</span>, <span class="st">&quot;Fri&quot;</span>)
 
 simulations <span class="op">%&gt;%</span>
@@ -283,7 +298,10 @@ simulations <span class="op">%&gt;%</span>
 ## 10     1     5 Evening     0
 ## # ... with 20 more rows</code></pre>
 <h1 id="using-case_when-to-determine-umbrella-change">Using case_when to determine umbrella change</h1>
-<p>case_when() requires a sequence of 2 sided formulas where the left is the input and the right is the output You separate the input and output with a tilde (~) Put the most general case at the end. Here, TRUE ~ 0 indicates that all other cases result in a 0. For some reason I can set office_delta = -home_delta here. Talk about a cleaner way to do it!</p>
+<p>case_when() requires a sequence of 2 sided formulas where the left is the input and the right is the output</p>
+<p>You separate the input and output with a tilde (~)</p>
+<p>Put the most general case at the end. Here, TRUE ~ 0 indicates that all other cases result in a 0.</p>
+<p>For some reason I can set office_delta = -home_delta here. Talk about a cleaner way to do it!</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crossing</span>(<span class="dt">trial =</span> <span class="dv">1</span><span class="op">:</span><span class="fl">1e6</span>,
          <span class="dt">dotw =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,
          <span class="dt">commute =</span> <span class="kw">c</span>(<span class="st">&quot;Morning&quot;</span>, <span class="st">&quot;Evening&quot;</span>)) <span class="op">%&gt;%</span>

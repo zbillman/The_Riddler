@@ -30,6 +30,7 @@ theme_set(theme_light())
 
 #First try
 crossing() is similar to expand.grid() in that it makes all combinations of what you ask
+
 don't know how to make it call on the previous umb_*_start to start the later columns
 ```{r}
 crossing(trial = 1:3,
@@ -54,6 +55,7 @@ I realized that I ran into an issue where I couldn't break down the umbrella cha
 
 #Building table with commutes
 Arrage is used to make sure it goes in order of each trial, dotw, then Morning and Evening
+
 rain = chance of rain for a given morning or evening. 50% morning, 40% evening
 ```{r}
 crossing(trial = 1:5,
@@ -66,7 +68,9 @@ crossing(trial = 1:5,
 
 #Calculating change in umbrellas by commute
 home_delta calculates the change in umbrellas at home for each combination of commute and rain
+
 office_delta calculates the change in umbrellas at the office for each combination of commute and rain
+
 I really wanted to make office_delta = -home_delta but for some reason that wouldn't work!
 ```{r}
 crossing(trial = 1:5,
@@ -160,16 +164,28 @@ simulations %>%
   summarize(pct_successes = mean(success))
 ```
 
+#Answer
+Louie's got ~69.3% chance of making it through the week this way!
+
 #The day Louie first gets wet
 Filters all lines of data for where umb_home or umb_office is less than 0
+
 Finds only the first one for each trial using distinct()
+
 counts how many times Louie first gets wet by the day of the week and the commute
+
 Changes the day of the week into a readable format using
+
   days <- c("Mon", "Tue", "Wed", "Thu", "Fri")
+  
   mutate(dotw = factor(days[dotw], levels = days)) turns dotw from a number to an ordered factor of dotw
+  
   dotw needs to be ordered 1,2,3,4,5 to match with Mon,Tue,Wed,Thu,Fri to make this work
+  
 Changes the order of morning and evening in the plot using fct_relevel
+
 complete() adds each dotw & commute combination to the count()
+
 Graphs out all of the days he first gets wet!
 ```{r}
 days <- c("Mon", "Tue", "Wed", "Thu", "Fri")
@@ -205,8 +221,11 @@ crossing(trial = 1:3,
 
 #Using case_when to determine umbrella change
 case_when() requires a sequence of 2 sided formulas where the left is the input and the right is the output
+
 You separate the input and output with a tilde (~)
+
 Put the most general case at the end. Here, TRUE ~ 0 indicates that all other cases result in a 0.
+
 For some reason I can set office_delta = -home_delta here. Talk about a cleaner way to do it!
 ```{r}
 crossing(trial = 1:1e6,
